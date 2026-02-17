@@ -1,0 +1,89 @@
+# Previne listagem de diretório
+Options -Indexes
+
+# Desativa a assinatura do servidor
+ServerSignature Off
+
+# Configurações de upload (ajuste conforme necessário)
+php_value upload_max_filesize 2M
+php_value post_max_size 8M
+php_value max_file_uploads 20
+php_value max_execution_time 30
+
+# Compressão GZIP para otimização de performance
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# Cache de recursos estáticos para otimização de performance
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Imagens
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    
+    # CSS e JavaScript
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/x-javascript "access plus 1 week"
+    
+    # Fontes
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # Padrão para outros arquivos
+    ExpiresDefault "access plus 2 days"
+</IfModule>
+
+# Headers de segurança
+<IfModule mod_headers.c>
+    # Previne ataques de clickjacking
+    Header always set X-Frame-Options DENY
+    # Previne ataques XSS
+    Header always set X-XSS-Protection "1; mode=block"
+    # Previne o navegador de "adivinhar" o tipo MIME
+    Header always set X-Content-Type-Options nosniff
+    # Força HTTPS (HSTS) - Descomente e configure para produção com SSL
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # Política de Segurança de Conteúdo (CSP) - Exemplo, ajuste conforme necessário
+    # Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://rugemtugem.dev;"
+</IfModule>
+
+# Redirecionamento de HTTP para HTTPS (descomente e configure para produção com SSL)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Regras para o diretório de uploads (se existir um subdiretório 'uploads')
+# Este bloco deve ser colocado dentro do .htaccess do diretório 'uploads' se for um subdiretório
+# <Directory /caminho/para/seu/projeto/uploads>
+#    # Previne execução de scripts PHP
+#    <Files "*.php">
+#        Order Deny,Allow
+#        Deny from all
+#    </Files>
+#
+#    # Permite apenas imagens
+#    <FilesMatch "\.(jpg|jpeg|png|gif)$">
+#        Order Allow,Deny
+#        Allow from all
+#    </FilesMatch>
+#
+#    # Previne listagem de diretório
+#    Options -Indexes
+# </Directory>
+
+

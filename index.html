@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gerador de assinatura de email profissional — Rugemtugem">
+  <title>Gerador de Assinatura — Rugemtugem</title>
+  <link rel="icon" type="image/webp" href="img/logo-nova.webp">
+
+  <!-- CDNs do Bootstrap 5.3.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Fonte Inter do Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Toast container para notificações -->
+  <div id="toastContainer"></div>
+
+  <div class="container main-container">
+    <!-- Botão de Admin -->
+    <div class="text-end mb-3">
+      <a href="admin/" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-shield-lock"></i> Admin
+      </a>
+    </div>
+
+    <!-- ===== CABEÇALHO DA APLICAÇÃO ===== -->
+    <div class="card header-card">
+      <div class="card-body text-center py-4">
+        <h1 class="display-5 fw-bold text-white mb-2">
+          <img src="img/logo-nova.webp" class="header-logo" alt="Rugemtugem">
+          Gerador de Assinatura
+        </h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- ===== COLUNA DO FORMULÁRIO ===== -->
+      <div class="col-lg-6">
+        <div class="card form-card">
+          <div class="card-body p-4">
+            <form id="sigForm">
+
+              <!-- ===== SEÇÃO: INFORMAÇÕES PESSOAIS ===== -->
+              <div class="mb-4">
+                <h4 class="section-title">
+                  <i class="bi bi-person-circle"></i>
+                  Informações Pessoais
+                </h4>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-person"></i>
+                      Nome Completo *
+                    </label>
+                    <input type="text" class="form-control" id="name" required placeholder="Digite seu nome completo">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-briefcase"></i>
+                      Cargo
+                    </label>
+                    <input type="text" class="form-control" id="role" placeholder="Ex: Gerente de Vendas">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-building"></i>
+                      Departamento
+                    </label>
+                    <input type="text" class="form-control" id="departamento" placeholder="Ex: Comercial">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-buildings"></i>
+                      Empresa
+                    </label>
+                    <input type="text" class="form-control" id="company" placeholder="Nome da empresa">
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== SEÇÃO: INFORMAÇÕES DE CONTATO ===== -->
+              <div class="mb-4">
+                <h4 class="section-title">
+                  <i class="bi bi-telephone"></i>
+                  Informações de Contato
+                </h4>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-envelope"></i>
+                      Email
+                    </label>
+                    <input type="email" class="form-control" id="email" placeholder="seu.email@empresa.com">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-globe"></i>
+                      Website
+                    </label>
+                    <input type="text" class="form-control" id="website" placeholder="https://exemplo.com.br" value="">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-telephone-fill"></i>
+                      Telefone
+                    </label>
+                    <input type="text" class="form-control" id="phone" placeholder="(99) 99999-9999">
+                  </div>
+                  <div class="col-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-geo-alt"></i>
+                      Endereço
+                    </label>
+                    <textarea class="form-control" id="address" rows="3"
+                      placeholder="Endereço completo da empresa"></textarea>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- ===== SEÇÃO: REDES SOCIAIS ===== -->
+              <div class="mb-4">
+                <h4 class="section-title">
+                  <i class="bi bi-share"></i>
+                  Redes Sociais
+                </h4>
+                <div class="row">
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label"><i class="bi bi-linkedin"></i> LinkedIn</label>
+                    <input type="text" class="form-control" id="linkedin" placeholder="usuario">
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label"><i class="bi bi-instagram"></i> Instagram</label>
+                    <input type="text" class="form-control" id="instagram" placeholder="usuario">
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label"><i class="bi bi-twitter-x"></i> Twitter</label>
+                    <input type="text" class="form-control" id="twitter" placeholder="usuario">
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== SEÇÃO: ESCOLHA DE MODELO ===== -->
+              <div class="mb-4">
+                <h4 class="section-title">
+                  <i class="bi bi-layout-text-window-reverse"></i>
+                  Escolha o Modelo
+                </h4>
+                <select class="form-select" id="template">
+                  <option value="modelo1">Modelo 1 (Clássico)</option>
+                  <option value="modelo2">Modelo 2 (Horizontal)</option>
+                  <option value="modelo3">Modelo 3 (Minimalista)</option>
+                  <option value="modelo4">Modelo 4 (Corporate Dark)</option>
+                </select>
+                <div id="templatePreview" class="text-center mt-3">
+                  <img src="img/modelo1.png" alt="Preview do Modelo" id="templatePreviewImg"
+                    class="img-fluid border rounded shadow"
+                    style="max-width: 350px; border: 2px solid rgba(255,255,255,0.1) !important;">
+                  <div class="small mt-1" id="templatePreviewLabel" style="color: rgba(229,231,235,0.6);">Modelo 1
+                    (Clássico)</div>
+                </div>
+              </div>
+
+              <!-- ===== SEÇÃO: PALETA DE CORES ===== -->
+              <div class="mb-4">
+                <h4 class="section-title">
+                  <i class="bi bi-palette"></i>
+                  Paleta de Cores
+                </h4>
+                <div class="palette-grid" id="paletteGrid">
+                  <div class="palette-card active" data-palette="rugemtugem" onclick="selectPalette('rugemtugem')">
+                    <div class="palette-swatch">
+                      <span style="background:#992A2B"></span>
+                      <span style="background:#EE6936"></span>
+                    </div>
+                    <small>Rugemtugem</small>
+                  </div>
+                  <div class="palette-card" data-palette="ocean" onclick="selectPalette('ocean')">
+                    <div class="palette-swatch">
+                      <span style="background:#0077B6"></span>
+                      <span style="background:#00B4D8"></span>
+                    </div>
+                    <small>Ocean</small>
+                  </div>
+                  <div class="palette-card" data-palette="forest" onclick="selectPalette('forest')">
+                    <div class="palette-swatch">
+                      <span style="background:#2D6A4F"></span>
+                      <span style="background:#52B788"></span>
+                    </div>
+                    <small>Forest</small>
+                  </div>
+                  <div class="palette-card" data-palette="midnight" onclick="selectPalette('midnight')">
+                    <div class="palette-swatch">
+                      <span style="background:#7B2CBF"></span>
+                      <span style="background:#C77DFF"></span>
+                    </div>
+                    <small>Midnight</small>
+                  </div>
+                  <div class="palette-card" data-palette="sunset" onclick="selectPalette('sunset')">
+                    <div class="palette-swatch">
+                      <span style="background:#E63946"></span>
+                      <span style="background:#F4A261"></span>
+                    </div>
+                    <small>Sunset</small>
+                  </div>
+                  <div class="palette-card" data-palette="custom" onclick="selectPalette('custom')">
+                    <div class="palette-swatch">
+                      <span
+                        style="background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);border-radius:50%"></span>
+                    </div>
+                    <small>Custom</small>
+                  </div>
+                </div>
+                <!-- Custom color pickers (hidden by default) -->
+                <div class="custom-color-pickers" id="customColorPickers" style="display:none">
+                  <div class="row g-2 mt-2">
+                    <div class="col-6">
+                      <label class="form-label small">Cor Primária</label>
+                      <input type="color" class="form-control form-control-color w-100" id="customPrimary"
+                        value="#992A2B">
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label small">Cor Secundária</label>
+                      <input type="color" class="form-control form-control-color w-100" id="customSecondary"
+                        value="#EE6936">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== SEÇÃO: UPLOAD DE IMAGENS ===== -->
+              <div class="mb-4">
+                <h4 class="section-title">
+                  <i class="bi bi-images"></i>
+                  Imagens
+                </h4>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-person-square"></i>
+                      Foto do Colaborador
+                    </label>
+                    <div class="file-upload-area photo-upload" onclick="document.getElementById('photo').click()">
+                      <i class="bi bi-cloud-upload upload-icon"></i>
+                      <p class="mb-0">Clique para selecionar ou arraste a imagem</p>
+                      <small class="text-muted">JPG, PNG (máx. 2MB)</small>
+                    </div>
+                    <input type="file" class="d-none" id="photo" accept="image/*">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                      <i class="bi bi-image"></i>
+                      Logo da Empresa
+                    </label>
+                    <div class="file-upload-area logo-upload" onclick="document.getElementById('logo').click()">
+                      <i class="bi bi-cloud-upload upload-icon"></i>
+                      <p class="mb-0">Clique para selecionar ou arraste a imagem</p>
+                      <small class="text-muted">JPG, PNG (máx. 2MB)</small>
+                    </div>
+                    <input type="file" class="d-none" id="logo" accept="image/*">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botão de submissão -->
+              <div class="text-center">
+                <button class="btn btn-primary btn-lg" type="submit">
+                  <i class="bi bi-magic me-2"></i>
+                  Gerar Assinatura
+                  <div class="loading-spinner ms-2" id="loadingSpinner"></div>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== COLUNA DO PREVIEW E OUTPUT ===== -->
+      <div class="col-lg-6">
+        <div class="sticky-top" style="top: 2rem;">
+
+          <!-- ===== ÁREA DE PREVIEW ===== -->
+          <div class="signature-preview">
+            <div class="preview-header">
+              <i class="bi bi-eye"></i>
+              Pré-visualização
+            </div>
+            <button type="button" id="copySignatureBtn" class="btn btn-secondary btn-sm position-absolute"
+              style="top: 15px; right: 15px; z-index: 10;" onclick="copyVisibleHTMLFromPreview()">
+              <i class="bi bi-clipboard me-1"></i>Copiar
+            </button>
+            <div id="sigPreview">
+              <div class="text-center text-muted py-4">
+                <i class="bi bi-envelope" style="font-size: 3rem; opacity: 0.3;"></i>
+                <p class="mt-2">Preencha o formulário para ver a pré-visualização</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== ÁREA DE OUTPUT HTML ===== -->
+          <div class="html-output">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <label class="form-label text-white mb-0">
+                <i class="bi bi-code-slash me-2"></i>
+                Código HTML
+              </label>
+              <button class="btn btn-secondary btn-sm" onclick="copyHTML()" id="copyBtn">
+                <i class="bi bi-clipboard me-1"></i>
+                Copiar
+              </button>
+            </div>
+            <textarea id="sigHTML" class="form-control" readonly
+              placeholder="O código HTML aparecerá aqui após gerar a assinatura..."></textarea>
+          </div>
+
+          <!-- Mensagens de feedback (legacy) -->
+          <div class="success-message" id="successMessage">
+            <i class="bi bi-check-circle"></i>
+            Assinatura copiada com sucesso!
+          </div>
+          <div class="success-message bg-danger" id="errorMessage" style="display: none;">
+            <i class="bi bi-exclamation-triangle"></i>
+            Por favor, gere uma assinatura antes de copiar!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MODAL: GUIA DE INSTALAÇÃO ===== -->
+    <div class="modal fade" id="installGuideModal" tabindex="-1" aria-labelledby="installGuideLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content glass-modal">
+          <div class="modal-header border-0">
+            <div>
+              <h5 class="modal-title" id="installGuideLabel">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Assinatura copiada!
+              </h5>
+              <p class="text-muted mb-0 small">Agora siga as instruções para instalá-la no seu email</p>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+              aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Tabs por cliente de email -->
+            <ul class="nav nav-pills guide-tabs mb-4" id="emailClientTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="gmail-tab" data-bs-toggle="pill" data-bs-target="#gmail"
+                  type="button" role="tab">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right:6px">
+                    <path
+                      d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
+                  </svg>
+                  Gmail
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="outlook-tab" data-bs-toggle="pill" data-bs-target="#outlook" type="button"
+                  role="tab">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right:6px">
+                    <path
+                      d="M24 7.387v10.478c0 .23-.08.424-.238.576-.158.154-.352.23-.58.23h-8.547v-6.959l1.6 1.229c.101.076.224.113.372.113.148 0 .273-.037.377-.113l6.637-5.107c.101-.076.19-.182.268-.317a.748.748 0 0 0 .111-.399zm0-1.27c0 .27-.094.494-.281.672L16.634 12.2l-1.999-1.537V5.329h8.547c.228 0 .422.077.58.232.158.154.238.348.238.556zM14.635 5.33v15.34H1.03A1.03 1.03 0 0 1 0 19.638V4.992a1.03 1.03 0 0 1 1.029-1.033h13.606v1.37zM10.1 9.467c-.243-.7-.595-1.254-1.058-1.66-.463-.406-1.015-.61-1.654-.61-.639 0-1.19.204-1.654.61-.463.406-.816.96-1.058 1.66-.243.7-.364 1.483-.364 2.35 0 .866.121 1.648.364 2.347.242.7.595 1.253 1.058 1.66.463.406 1.015.61 1.654.61.64 0 1.191-.204 1.654-.61.463-.407.815-.96 1.058-1.66.243-.7.364-1.481.364-2.348 0-.866-.121-1.649-.364-2.349zm-1.228 4.044c-.117.5-.29.883-.518 1.147-.228.264-.496.396-.803.396-.308 0-.576-.132-.804-.396-.228-.264-.401-.647-.518-1.147-.117-.5-.176-1.059-.176-1.676 0-.618.059-1.177.176-1.677.117-.5.29-.882.518-1.147.228-.264.496-.396.804-.396.307 0 .575.132.803.396.228.265.401.647.518 1.147.117.5.176 1.06.176 1.677 0 .617-.059 1.175-.176 1.676z" />
+                  </svg>
+                  Outlook
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="apple-tab" data-bs-toggle="pill" data-bs-target="#apple" type="button"
+                  role="tab">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right:6px">
+                    <path
+                      d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                  </svg>
+                  Apple Mail
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="outros-tab" data-bs-toggle="pill" data-bs-target="#outros" type="button"
+                  role="tab">
+                  <i class="bi bi-envelope me-1"></i>Outros
+                </button>
+              </li>
+            </ul>
+
+            <!-- Conteúdo das tabs -->
+            <div class="tab-content" id="emailClientTabContent">
+              <!-- Gmail -->
+              <div class="tab-pane fade show active" id="gmail" role="tabpanel">
+                <div class="guide-steps">
+                  <div class="guide-step">
+                    <span class="step-number">1</span>
+                    <div>
+                      <strong>Abra as Configurações</strong>
+                      <p>No Gmail, clique na <b>engrenagem ⚙️</b> (canto superior direito) → <b>"Ver todas as
+                          configurações"</b></p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">2</span>
+                    <div>
+                      <strong>Encontre a seção de Assinatura</strong>
+                      <p>Na aba <b>"Geral"</b>, role até <b>"Assinatura"</b>. Clique em <b>"+ Criar nova"</b> e dê um
+                        nome.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">3</span>
+                    <div>
+                      <strong>Cole a assinatura</strong>
+                      <p>No editor de assinatura, pressione <b>Ctrl+V</b> (ou Cmd+V no Mac) para colar a assinatura
+                        copiada.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">4</span>
+                    <div>
+                      <strong>Defina como padrão</strong>
+                      <p>Em <b>"Padrões de assinatura"</b>, selecione sua nova assinatura para <b>"Novos e-mails"</b> e
+                        <b>"Respostas/encaminhamentos"</b>.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">5</span>
+                    <div>
+                      <strong>Salve</strong>
+                      <p>Role até o final da página e clique em <b>"Salvar alterações"</b>.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Outlook -->
+              <div class="tab-pane fade" id="outlook" role="tabpanel">
+                <div class="guide-steps">
+                  <h6 class="text-warning mb-3"><i class="bi bi-globe me-1"></i> Outlook Web (365)</h6>
+                  <div class="guide-step">
+                    <span class="step-number">1</span>
+                    <div>
+                      <strong>Abra as Configurações</strong>
+                      <p>Clique na <b>engrenagem ⚙️</b> (canto superior direito) → <b>"Exibir todas as configurações do
+                          Outlook"</b>.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">2</span>
+                    <div>
+                      <strong>Navegue até Assinatura</strong>
+                      <p>Vá em <b>Email → Redigir e responder</b>. Encontre a seção <b>"Assinatura de e-mail"</b>.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">3</span>
+                    <div>
+                      <strong>Cole a assinatura</strong>
+                      <p>Clique em <b>"+ Nova assinatura"</b>, dê um nome e cole com <b>Ctrl+V</b>.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">4</span>
+                    <div>
+                      <strong>Defina como padrão e salve</strong>
+                      <p>Selecione a assinatura como padrão para novas mensagens e respostas. Clique em <b>"Salvar"</b>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <hr class="border-secondary my-4">
+
+                  <h6 class="text-warning mb-3"><i class="bi bi-pc-display me-1"></i> Outlook Desktop</h6>
+                  <div class="guide-step">
+                    <span class="step-number">1</span>
+                    <div>
+                      <strong>Abra o editor de Assinaturas</strong>
+                      <p>Vá em <b>Arquivo → Opções → Email → Assinaturas</b> (ou <b>Novo Email → Assinatura →
+                          Assinaturas</b>).</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">2</span>
+                    <div>
+                      <strong>Crie e cole</strong>
+                      <p>Clique em <b>"Novo"</b>, dê um nome e cole a assinatura com <b>Ctrl+V</b> no editor.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">3</span>
+                    <div>
+                      <strong>Salve</strong>
+                      <p>Defina para novas mensagens e respostas, depois clique em <b>OK</b>.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Apple Mail -->
+              <div class="tab-pane fade" id="apple" role="tabpanel">
+                <div class="guide-steps">
+                  <div class="guide-step">
+                    <span class="step-number">1</span>
+                    <div>
+                      <strong>Abra as Preferências</strong>
+                      <p>No Apple Mail, vá em <b>Mail → Preferências</b> (ou <b>Cmd + ,</b>).</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">2</span>
+                    <div>
+                      <strong>Aba Assinaturas</strong>
+                      <p>Clique na aba <b>"Assinaturas"</b>, selecione a conta de email e clique em <b>"+"</b>.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">3</span>
+                    <div>
+                      <strong>Cole a assinatura</strong>
+                      <p>No painel de edição à direita, cole com <b>Cmd+V</b>. <b>Desmarque</b> "Sempre usar formato
+                        padrão".</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">4</span>
+                    <div>
+                      <strong>Defina como padrão</strong>
+                      <p>Na parte inferior, selecione a nova assinatura como padrão no menu <b>"Escolher
+                          assinatura"</b>.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Outros -->
+              <div class="tab-pane fade" id="outros" role="tabpanel">
+                <div class="guide-steps">
+                  <div class="guide-step">
+                    <span class="step-number">1</span>
+                    <div>
+                      <strong>Acesse as Configurações</strong>
+                      <p>Abra as <b>Configurações</b> ou <b>Preferências</b> do seu cliente de email.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">2</span>
+                    <div>
+                      <strong>Encontre "Assinatura"</strong>
+                      <p>Procure pela seção de <b>Assinatura de email</b> (geralmente em Configurações → Email ou
+                        Redigir).</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <span class="step-number">3</span>
+                    <div>
+                      <strong>Cole e salve</strong>
+                      <p>Cole a assinatura com <b>Ctrl+V</b> (ou Cmd+V) e salve as configurações.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step mt-3">
+                    <span class="step-number"><i class="bi bi-info-circle"></i></span>
+                    <div>
+                      <strong>Thunderbird</strong>
+                      <p>Vá em <b>Configurações da Conta → Composição e Endereçamento</b>. Marque <b>"Usar HTML"</b>,
+                        cole a assinatura, e salve.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-light btn-sm" onclick="copyVisibleHTMLFromPreview(true)">
+              <i class="bi bi-clipboard me-1"></i>Copiar Novamente
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">
+              <i class="bi bi-check-lg me-1"></i>Entendi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer">
+      <p>&copy; <span id="current-year"></span> <a href="https://rugemtugem.dev" target="_blank">Rugemtugem</a> —
+        Gerador de Assinatura</p>
+    </footer>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

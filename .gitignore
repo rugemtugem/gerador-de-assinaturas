@@ -1,0 +1,29 @@
+# === Uploads (user-generated content) ===
+uploads/*
+!uploads/index.html
+
+# === Admin data (sensitive, auto-generated) ===
+admin/data/config.json
+admin/data/config.json.bak
+admin/data/activity.log
+
+# === Stats (auto-generated) ===
+stats.json
+
+# === Server logs ===
+error_log
+admin/error_log
+
+# === OS files ===
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === PROMPTS (internal dev notes) ===
+PROMPTS.md
