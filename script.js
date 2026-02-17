@@ -1157,7 +1157,7 @@ const modelos = {
     label: 'Modelo 3 (Minimalista)'
   },
   'modelo4': {
-    img: 'img/modelo3.png',
+    img: 'img/modelo4.png',
     label: 'Modelo 4 (Corporate Dark)'
   }
 };
