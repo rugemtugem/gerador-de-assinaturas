@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a2e">
   <meta name="description" content="Gerador de assinatura de email profissional — Rugemtugem">
   <title>Gerador de Assinatura — Rugemtugem</title>
   <link rel="icon" type="image/webp" href="img/logo-nova.webp">
@@ -48,10 +49,13 @@
 
               <!-- ===== SEÇÃO: INFORMAÇÕES PESSOAIS ===== -->
               <div class="mb-4">
-                <h4 class="section-title">
-                  <i class="bi bi-person-circle"></i>
-                  Informações Pessoais
-                </h4>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h4 class="section-title mb-0">
+                    <i class="bi bi-person-circle"></i>
+                    Informações Pessoais
+                  </h4>
+                  <span class="field-counter" id="fieldCounter">0/11</span>
+                </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label class="form-label">
@@ -152,19 +156,50 @@
                   <i class="bi bi-layout-text-window-reverse"></i>
                   Escolha o Modelo
                 </h4>
-                <select class="form-select" id="template">
+                <div class="template-grid" id="templateGrid">
+                  <div class="template-card active" data-template="modelo1" onclick="selectTemplate('modelo1')">
+                    <div class="template-thumb">
+                      <img src="img/modelo1.png" alt="Modelo 1" loading="lazy">
+                    </div>
+                    <div class="template-info">
+                      <span class="template-name">Clássico</span>
+                      <span class="template-badge">Formal</span>
+                    </div>
+                  </div>
+                  <div class="template-card" data-template="modelo2" onclick="selectTemplate('modelo2')">
+                    <div class="template-thumb">
+                      <img src="img/modelo2.png" alt="Modelo 2" loading="lazy">
+                    </div>
+                    <div class="template-info">
+                      <span class="template-name">Horizontal</span>
+                      <span class="template-badge">Moderno</span>
+                    </div>
+                  </div>
+                  <div class="template-card" data-template="modelo3" onclick="selectTemplate('modelo3')">
+                    <div class="template-thumb">
+                      <img src="img/modelo3.png" alt="Modelo 3" loading="lazy">
+                    </div>
+                    <div class="template-info">
+                      <span class="template-name">Minimalista</span>
+                      <span class="template-badge">Clean</span>
+                    </div>
+                  </div>
+                  <div class="template-card" data-template="modelo4" onclick="selectTemplate('modelo4')">
+                    <div class="template-thumb">
+                      <img src="img/modelo4.png" alt="Modelo 4" loading="lazy">
+                    </div>
+                    <div class="template-info">
+                      <span class="template-name">Corporate</span>
+                      <span class="template-badge badge-dark">Dark</span>
+                    </div>
+                  </div>
+                </div>
+                <select class="d-none" id="template">
                   <option value="modelo1">Modelo 1 (Clássico)</option>
                   <option value="modelo2">Modelo 2 (Horizontal)</option>
                   <option value="modelo3">Modelo 3 (Minimalista)</option>
                   <option value="modelo4">Modelo 4 (Corporate Dark)</option>
                 </select>
-                <div id="templatePreview" class="text-center mt-3">
-                  <img src="img/modelo1.png" alt="Preview do Modelo" id="templatePreviewImg"
-                    class="img-fluid border rounded shadow"
-                    style="max-width: 350px; border: 2px solid rgba(255,255,255,0.1) !important;">
-                  <div class="small mt-1" id="templatePreviewLabel" style="color: rgba(229,231,235,0.6);">Modelo 1
-                    (Clássico)</div>
-                </div>
               </div>
 
               <!-- ===== SEÇÃO: PALETA DE CORES ===== -->
@@ -319,15 +354,8 @@
               placeholder="O código HTML aparecerá aqui após gerar a assinatura..."></textarea>
           </div>
 
-          <!-- Mensagens de feedback (legacy) -->
-          <div class="success-message" id="successMessage">
-            <i class="bi bi-check-circle"></i>
-            Assinatura copiada com sucesso!
-          </div>
-          <div class="success-message bg-danger" id="errorMessage" style="display: none;">
-            <i class="bi bi-exclamation-triangle"></i>
-            Por favor, gere uma assinatura antes de copiar!
-          </div>
+
+
         </div>
       </div>
     </div>

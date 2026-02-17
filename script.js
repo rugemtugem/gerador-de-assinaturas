@@ -1142,47 +1142,241 @@ function showCopyFeedback(buttonId) {
   }, 3000);
 }
 
-// Mapeamento dos modelos para imagens e legendas
-const modelos = {
-  'modelo1': {
-    img: 'img/modelo1.png',
-    label: 'Modelo 1 (Clássico)'
-  },
-  'modelo2': {
-    img: 'img/modelo2.png',
-    label: 'Modelo 2 (Horizontal)'
-  },
-  'modelo3': {
-    img: 'img/modelo3.png',
-    label: 'Modelo 3 (Minimalista)'
-  },
-  'modelo4': {
-    img: 'img/modelo4.png',
-    label: 'Modelo 4 (Corporate Dark)'
-  }
-};
-
-document.addEventListener('DOMContentLoaded', function () {
-  const select = document.getElementById('template');
-  const previewImg = document.getElementById('templatePreviewImg');
-  const previewLabel = document.getElementById('templatePreviewLabel');
-
-  select.addEventListener('change', function () {
-    const valor = select.value;
-    if (modelos[valor]) {
-      previewImg.src = modelos[valor].img;
-      previewImg.alt = modelos[valor].label;
-      previewLabel.textContent = modelos[valor].label;
-      // Animação fade-in
-      previewImg.classList.remove('fade-in');
-      void previewImg.offsetWidth; // reflow
-      previewImg.classList.add('fade-in');
-    }
+/** Seleciona um template via card visual */
+function selectTemplate(templateId) {
+  // Atualiza cards visuais
+  document.querySelectorAll('.template-card').forEach(card => {
+    card.classList.remove('active');
   });
-});
+  const activeCard = document.querySelector(`.template-card[data-template="${templateId}"]`);
+  if (activeCard) {
+    activeCard.classList.add('active');
+    // Animação de seleção
+    activeCard.style.transform = 'scale(0.95)';
+    setTimeout(() => { activeCard.style.transform = ''; }, 150);
+  }
+  // Sincroniza o select hidden
+  const select = document.getElementById('template');
+  if (select) {
+    select.value = templateId;
+    select.dispatchEvent(new Event('change'));
+  }
+  // Atualiza o preview da assinatura
+  updatePreview();
+}
 
 //Data = Ano atual
 const yearElement = document.getElementById('current-year');
 if (yearElement) {
   yearElement.textContent = new Date().getFullYear();
 }
+
+/* ===== P3: SMART FORM UX ===== */
+
+/** Máscara de Telefone — auto-formata (99) 99999-9999 */
+function applyPhoneMask(input) {
+    input.addEventListener('input', function () {
+        let v = this.value.replace(/\D/g, '');
+        if (v.length > 11) v = v.slice(0, 11);
+        if (v.length > 6) {
+            this.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+        } else if (v.length > 2) {
+            this.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+        } else if (v.length > 0) {
+            this.value = `(${v}`;
+        }
+    });
+}
+
+/** Validação visual nos campos */
+function setupFieldValidation() {
+    const fields = document.querySelectorAll('#sigForm .form-control, #sigForm .form-select');
+    fields.forEach(field => {
+        field.addEventListener('blur', function () {
+            if (this.value.trim()) {
+                this.classList.add('is-filled');
+                this.classList.remove('is-empty');
+            } else {
+                this.classList.remove('is-filled');
+            }
+        });
+        field.addEventListener('input', function () {
+            if (this.value.trim()) {
+                this.classList.add('is-filled');
+            } else {
+                this.classList.remove('is-filled');
+            }
+            updateFieldCounter();
+        });
+    });
+}
+
+/** Contador de campos preenchidos */
+function updateFieldCounter() {
+    const fields = ['name', 'role', 'departamento', 'company', 'email', 'website', 'phone', 'address', 'linkedin', 'instagram', 'twitter'];
+    let filled = 0;
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value.trim()) filled++;
+    });
+    const counter = document.getElementById('fieldCounter');
+    if (counter) {
+        counter.textContent = `${filled}/${fields.length}`;
+        counter.classList.toggle('counter-active', filled > 0);
+    }
+}
+
+/** Auto-save para localStorage */
+const STORAGE_KEY = 'assinatura_form_data';
+
+function saveFormData() {
+    const fields = ['name', 'role', 'departamento', 'company', 'email', 'website', 'phone', 'address', 'linkedin', 'instagram', 'twitter'];
+    const data = {};
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data[id] = el.value;
+    });
+    data._template = document.getElementById('template')?.value || 'modelo1';
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) { /* quota exceeded, ignore */ }
+}
+
+function restoreFormData() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        const fields = ['name', 'role', 'departamento', 'company', 'email', 'website', 'phone', 'address', 'linkedin', 'instagram', 'twitter'];
+        let hasData = false;
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && data[id]) {
+                el.value = data[id];
+                el.classList.add('is-filled');
+                hasData = true;
+            }
+        });
+        if (data._template) {
+            selectTemplate(data._template);
+        }
+        if (hasData) {
+            updateFieldCounter();
+            updatePreview();
+            showToast('Dados anteriores restaurados', 'info', 2500);
+        }
+    } catch (e) { /* corrupted data, ignore */ }
+}
+
+/* ===== P4: UPLOAD PREVIEW ===== */
+
+function setupUploadPreviews() {
+    const photoInput = document.getElementById('photo');
+    const logoInput = document.getElementById('logo');
+
+    if (photoInput) {
+        photoInput.addEventListener('change', function () {
+            showUploadPreview(this, '.photo-upload');
+        });
+    }
+    if (logoInput) {
+        logoInput.addEventListener('change', function () {
+            showUploadPreview(this, '.logo-upload');
+        });
+    }
+}
+
+function showUploadPreview(input, areaSelector) {
+    const area = document.querySelector(areaSelector);
+    if (!area || !input.files || !input.files[0]) return;
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        // Remover preview anterior
+        const oldPreview = area.querySelector('.upload-preview-container');
+        if (oldPreview) oldPreview.remove();
+
+        const container = document.createElement('div');
+        container.className = 'upload-preview-container';
+        container.innerHTML = `
+      <img src="${e.target.result}" alt="Preview" class="upload-preview-img">
+      <div class="upload-preview-overlay">
+        <span class="upload-preview-name">${file.name}</span>
+        <button type="button" class="upload-preview-remove" onclick="removeUploadPreview(this, '${areaSelector}', '${input.id}')">
+          <i class="bi bi-x-circle-fill"></i>
+        </button>
+      </div>
+    `;
+
+        // Esconder o conteúdo original da area
+        const originalContent = area.querySelectorAll(':scope > *:not(.upload-preview-container)');
+        originalContent.forEach(el => el.style.display = 'none');
+
+        area.appendChild(container);
+        area.classList.add('has-preview');
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function removeUploadPreview(btn, areaSelector, inputId) {
+    event.stopPropagation();
+    const area = document.querySelector(areaSelector);
+    const input = document.getElementById(inputId);
+    if (area) {
+        const preview = area.querySelector('.upload-preview-container');
+        if (preview) preview.remove();
+        // Mostrar conteúdo original
+        const originalContent = area.querySelectorAll(':scope > *');
+        originalContent.forEach(el => el.style.display = '');
+        area.classList.remove('has-preview');
+    }
+    if (input) {
+        input.value = '';
+    }
+}
+
+/* ===== INICIALIZAÇÃO GERAL ===== */
+document.addEventListener('DOMContentLoaded', function () {
+    // P3: Máscara de telefone
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) applyPhoneMask(phoneInput);
+
+    // P3: Validação visual
+    setupFieldValidation();
+
+    // P3: Auto-save (salvar a cada alteração, com debounce)
+    let saveTimeout;
+    document.querySelectorAll('#sigForm .form-control, #sigForm .form-select').forEach(field => {
+        field.addEventListener('input', function () {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveFormData, 1000);
+        });
+    });
+
+    // P3: Restaurar dados salvos
+    restoreFormData();
+
+    // P4: Upload previews
+    setupUploadPreviews();
+
+    // P3: Contador inicial
+    updateFieldCounter();
+
+    // P5: Scroll suave para preview em mobile ao gerar
+    const form = document.getElementById('sigForm');
+    if (form) {
+        form.addEventListener('submit', function () {
+            if (window.innerWidth <= 992) {
+                setTimeout(() => {
+                    const preview = document.querySelector('.signature-preview');
+                    if (preview) {
+                        preview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 500);
+            }
+        });
+    }
+});
